@@ -7,6 +7,7 @@
   <maintainer email="ivan@todo.todo">ivan</maintainer>
   <license>TODO: License declaration</license>
 
+  <depend>beebot_msgs</depend>
   <build_depend>std_msgs</exec_depend>
   <build_depend>geometry_msgs</build_depend>
 
