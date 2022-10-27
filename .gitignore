@@ -1,0 +1,14 @@
+#Ignorar archivos compilados
+**/build/**
+**/install/**
+**/log/**
+**/*.pyc
+
+#Archivo de uso interno de catkin
+.catkin_workspace
+
+#Archivos de MacOS
+.DS_Store
+
+#Archivos de VSCode
+.vscode/
