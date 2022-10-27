@@ -28,11 +28,13 @@ class NodoBeebot(Node):
 
     # Se corre cada vez que llega un mensaje
     # ("reacciona" a los mensajes)
-    def callback_trabajo(self):
-        msg = Float32()
-        msg.data = 100.0
-        self.pub_avanzar.publish(msg)
-        self.logger('Avanzando a: "%s"' % msg.data)
+    def callback_trabajo(self, msg):
+        pasos = msg.data
+        
+        msg_out = Float32()
+        msg_out.data = 100.0*pasos
+        self.pub_avanzar.publish(msg_out)
+        self.logger('Avanzando a: "%s"' % msg_out.data)
 
     def logger(self, texto):
         self.get_logger().info(texto)
