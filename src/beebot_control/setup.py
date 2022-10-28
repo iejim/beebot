@@ -21,7 +21,9 @@ setup(
     entry_points={
         'console_scripts': [
             'simple_publisher = beebot_control.simple_publisher:main',
-            'nodo_beebot = beebot_control.nodo_beebot:main'
+            'nodo_beebot = beebot_control.nodo_beebot:main',
+            'interfaz_pca = beebot_control.interfaz_pca:main',
+
         ],
     },
 )
