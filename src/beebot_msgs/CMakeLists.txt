@@ -27,6 +27,7 @@ rosidl_generate_interfaces(${PROJECT_NAME}
   "msg/CanalesPCA.msg"
   "msg/CanalPCA.msg"
   "msg/ParFloat32.msg"
+  "msg/Gamepad.msg"
   DEPENDENCIES geometry_msgs # Add packages that above messages depend on, in this case geometry_msgs for Sphere.msg
 )
 

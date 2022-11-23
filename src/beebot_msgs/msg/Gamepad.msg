@@ -1,0 +1,9 @@
+uint8 rx
+uint8 ry
+uint8 lx
+uint8 ly
+uint8 arrow
+uint8 letter
+uint8 l
+uint8 r
+uint8 control
