@@ -19,9 +19,9 @@ def generate_launch_description():
         output='screen',
     )
 
-    simple_publisher_cmd = Node(
+    nodo_gamepad_cmd = Node(
         package='beebot_control',
-        executable='simple_publisher',
+        executable='nodo_gamepad',
         arguments=[
             
         ],
@@ -42,7 +42,7 @@ def generate_launch_description():
 
     # Agregar ejecutables al lanzador
     ld.add_action(nodo_beebot_cmd)
-    ld.add_action(simple_publisher_cmd)
+    ld.add_action(nodo_gamepad_cmd)
     # ld.add_action(start_rqt_gui)
 
     # Otras opciones para el lanzador
