@@ -1,0 +1,38 @@
+#!/usr/bin/bash 
+
+SEARCHSTR="python3.*beebot.*"
+PIDFILE="nodos.pid"
+
+
+if [ -f $PIDFILE ]; then
+    pids=`cat $PIDFILE`
+    rm $PIDFILE
+
+    echo "Nodos reportados como corriendo"
+    ps -j -p $pids
+
+    echo "Deteniendo nodos"
+    sleep 1; echo -n "."
+    sleep 1; echo -n "."
+    sleep 1; echo -n "."
+    kill $pids
+else
+    echo "No se encuentra el archivo '$PIDFILE' con registro de nodos corriendo."
+    echo "Esto es lo que encuentro corriendo pgrep -f beebot:"
+
+
+    pids=$(pgrep -d" " -f "$SEARCHSTR" || echo 0)
+    
+    if [ "x$pids" == "x0" ]; then
+       echo "Ninguno"
+       exit
+    fi
+    ps -jfp $pids
+
+    echo "Deteniendo nodos"
+    sleep 1; echo -n "."
+    sleep 1; echo -n "."
+    sleep 1; echo -n "."
+
+    pkill -9 -f "$SEARCHSTR"
+fi

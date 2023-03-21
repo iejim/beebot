@@ -1,0 +1,30 @@
+#!/usr/bin/bash 
+
+
+LOGFILE="console.log"
+PIDFILE="nodos.pid"
+SEARCHSTR="python3.*beebot.*"
+
+# Revisa si ya está corriendo
+if [ -f $PIDFILE ]; then 
+    echo "Parece que ya están corriendo los nodos."
+    echo "Estos son los procesos que se reportan corriendo:"
+
+    ps `cat $PIDFILE`
+
+    echo "Para detener o corregir, intenta correr ./detener_nodos_basicos"
+
+    exit
+fi
+echo "Inicializando los nodos"
+
+
+{ nohup ros2 launch beebot_control nodos_basicos.launch.py >> $LOGFILE & echo "Esperando"; sleep 3; echo `pgrep -d" " -s 0 -f ${SEARCHSTR}` > $PIDFILE; }
+
+echo "Nodos iniciados"
+pgrep -l -s 0 -f ${SEARCHSTR}
+
+
+# echo "Imprimiendo los mensajes detras de cámara. Para detener, usar 'pkill -s 0 tail'"
+# tail -f $LOGFILE &
+

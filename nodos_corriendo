@@ -1,0 +1,26 @@
+#!/usr/bin/bash 
+
+# Revisa si ya está corriendo
+
+
+SEARCHSTR="python3.*beebot.*"
+PIDFILE="nodos.pid"
+
+echo "Nodos reportados o corriendo por ROS:"
+ros2 node list
+
+echo ""
+
+if [ -f $PIDFILE ]; then
+    echo "Nodos marcados como corriendo automático:"
+    pid=`cat $PIDFILE`
+    ps -p $pid 
+fi
+
+echo ""
+echo "Estos son los procesos que se reportan corriendo:"
+
+pgrep -lf $SEARCHSTR 
+
+echo ""
+echo "Para detener o corregir, intenta correr ./detener_nodos_basicos"
