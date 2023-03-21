@@ -187,12 +187,18 @@ def main(args=None):
     nodo = GamepadControlNode("nodo_gamepad_control") 
 
     # En este caso solo espera a que llegue un mensaje y reaccionar
-    rclpy.spin(nodo) 
+    try:
+        rclpy.spin(nodo) 
+    except KeyboardInterrupt:
+        pass 
 
     # Destroy the node explicitly
     # (optional - otherwise it will be done automatically
     # when the garbage collector destroys the node object)
-    nodo.destroy_node() # Buena práctica
+    try:
+        nodo.destroy_node() # Buena práctica
+    except rclpy.handle.InvalidHandle:
+        pass
     rclpy.shutdown() # Desconecta el prorama de ROS antes de cerrar
 
 
