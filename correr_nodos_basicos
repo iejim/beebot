@@ -1,4 +1,4 @@
-#!/usr/bin/bash 
+#!/usr/bin/bash
 
 
 LOGFILE="console.log"
@@ -6,7 +6,7 @@ PIDFILE="nodos.pid"
 SEARCHSTR="python3.*beebot.*"
 
 # Revisa si ya está corriendo
-if [ -f $PIDFILE ]; then 
+if [ -f $PIDFILE ]; then
     echo "Parece que ya están corriendo los nodos."
     echo "Estos son los procesos que se reportan corriendo:"
 
@@ -16,15 +16,49 @@ if [ -f $PIDFILE ]; then
 
     exit
 fi
-echo "Inicializando los nodos"
+echo "Preparando para iniciar los nodos"
 
 
-{ nohup ros2 launch beebot_control nodos_basicos.launch.py >> $LOGFILE & echo "Esperando"; sleep 3; echo `pgrep -d" " -s 0 -f ${SEARCHSTR}` > $PIDFILE; }
+c=0
 
-echo "Nodos iniciados"
-pgrep -l -s 0 -f ${SEARCHSTR}
+{ nohup ros2 launch beebot_control nodos_basicos.launch.py &> $LOGFILE & }
+
+# Esperando a que se limpie el LOGFILE
+
+while [[ -s $LOGFILE ]] && [[ $c -lt 10 ]]; do
+        sleep 0.2
+        c=$(($c+1))
+done
+
+# Esperando a que se inicialicen los proceso (timeout 20secs)
+# La señal es que se le escriba algo al LOGFILE
+c=0
+while [[ ! -s $LOGFILE ]] && [[ $c -lt 20 ]]; do
+
+        echo -n "."
+        sleep 1
+        c=$(($c+1))
+
+done
+echo
+echo "Esperar a los nodos"
+# Imprimir el archivo  en lo que esperamos más progreso
+tail -f $LOGFILE &
 
 
-# echo "Imprimiendo los mensajes detras de cámara. Para detener, usar 'pkill -s 0 tail'"
-# tail -f $LOGFILE &
+# Idealmente monitoreamos algo para saber que todo abrió
+# Por ahora esperamos
 
+sleep 5
+
+# Detenemos el monitoreo
+pkill -s0 -f tail.*$LOGFILE
+
+# Guardamos los procesos iniciados (no es perfecto)
+echo `pgrep -d" " -s 0 -f ${SEARCHSTR}` > $PIDFILE
+
+echo
+echo "Procesos iniciados"
+pgrep -a -s 0 -f ${SEARCHSTR}
+
+echo "Para detener los nodos, correr ./detener_nodos_basicos"

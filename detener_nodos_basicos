@@ -1,4 +1,4 @@
-#!/usr/bin/bash 
+#!/usr/bin/bash
 
 SEARCHSTR="python3.*beebot.*"
 PIDFILE="nodos.pid"
@@ -13,16 +13,20 @@ if [ -f $PIDFILE ]; then
 
     echo "Deteniendo nodos"
     sleep 1; echo -n "."
-    sleep 1; echo -n "."
-    sleep 1; echo -n "."
+    #sleep 1; echo -n "."
+    sleep 1; echo "."
     kill $pids
+
+    echo "Revisando si hay posibles nodos pendientes. Para detenerlos, correr el programa otra vez:"
+    pgrep -d" " -f "$SEARCHSTR"
+    echo "Fin"
+
 else
     echo "No se encuentra el archivo '$PIDFILE' con registro de nodos corriendo."
-    echo "Esto es lo que encuentro corriendo pgrep -f beebot:"
-
+    echo "Esto es lo que encuentro corriendo pgrep -f $SEARCHSTR:"
 
     pids=$(pgrep -d" " -f "$SEARCHSTR" || echo 0)
-    
+
     if [ "x$pids" == "x0" ]; then
        echo "Ninguno"
        exit
@@ -31,8 +35,9 @@ else
 
     echo "Deteniendo nodos"
     sleep 1; echo -n "."
-    sleep 1; echo -n "."
-    sleep 1; echo -n "."
+    #sleep 1; echo -n "."
+    sleep 1; echo "."
+
 
     pkill -9 -f "$SEARCHSTR"
 fi
