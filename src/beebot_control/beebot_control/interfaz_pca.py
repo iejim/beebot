@@ -46,11 +46,16 @@ class InterfazPCA(Node):
             self.destroy_node() # debería evitar seguir trabajando
             return
 
-        if freq is None:
-            self.pca.set_pwm_frequency(50)
-            return
+        if freq is None: 
+            freq = 50
 
-        self.pca.set_pwm_frequency(freq)
+        try:
+            self.pca.set_pwm_frequency(freq)
+        except IOError:
+            self.logger("Problema inicializando el PCA por I2C. Saliendo")
+            self.destroy_node() # debería evitar seguir trabajando
+            self.pca = None
+            return
         
     def get_conectado(self):
         return not self.pca is None
